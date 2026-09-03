@@ -1,8 +1,7 @@
-import { CalendarDays, Clock3, Radio } from 'lucide-react'
-import { event } from '../data/content'
-import ReserveForm from './ReserveForm'
+import { ArrowRight } from 'lucide-react'
+import { event, ctaLabel } from '../data/content'
 
-export default function FinalCTA() {
+export default function FinalCTA({ onReserve }) {
   return (
     <section className="relative overflow-hidden bg-ink py-24 md:py-32">
       <div
@@ -31,23 +30,15 @@ export default function FinalCTA() {
           Your journey to Own Your Worth starts here.
         </p>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-cream/80">
-          <span className="flex items-center gap-2">
-            <CalendarDays className="h-4 w-4 text-gold" strokeWidth={1.75} />
-            {event.day}, {event.date}
-          </span>
-          <span className="flex items-center gap-2">
-            <Clock3 className="h-4 w-4 text-gold" strokeWidth={1.75} />
-            {event.time}
-          </span>
-          <span className="flex items-center gap-2">
-            <Radio className="h-4 w-4 text-gold" strokeWidth={1.75} />
-            {event.format}
-          </span>
-        </div>
-
         <div className="mt-10">
-          <ReserveForm />
+          <button
+            type="button"
+            onClick={onReserve}
+            className="group inline-flex items-center gap-2 rounded-full bg-gold px-8 py-4 font-body text-base font-semibold text-ink shadow-[0_10px_30px_-8px_rgba(217,164,65,0.5)] transition-all hover:scale-[1.02] hover:bg-gold-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream"
+          >
+            {ctaLabel}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
+          </button>
         </div>
       </div>
     </section>

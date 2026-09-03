@@ -75,7 +75,7 @@ function FaqRow({ item, isOpen, onToggle }) {
   );
 }
 
-export default function FAQSection() {
+export default function FAQSection({ onReserve }) {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
@@ -105,7 +105,11 @@ export default function FAQSection() {
           <p className="font-serif text-[19px] text-[#2a1b3d]">
             Still have a question of your own?
           </p>
-          <button className="rounded-full bg-[#2a1b3d] px-7 py-3 font-sans text-[14px] text-[#faf7f0] transition-colors hover:bg-[#3a2650]">
+          <button
+            type="button"
+            onClick={onReserve}
+            className="rounded-full bg-[#2a1b3d] px-7 py-3 font-sans text-[14px] text-[#faf7f0] transition-colors hover:bg-[#3a2650]"
+          >
             Reserve Your Seat Now
           </button>
         </div>

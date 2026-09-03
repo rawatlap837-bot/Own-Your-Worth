@@ -1,7 +1,11 @@
-import { Check } from 'lucide-react'
+import { useState } from 'react'
+import { Check, ArrowRight } from 'lucide-react'
 import { joinIfPoints, ctaLabel } from '../data/content'
+import ReservationModal from './ReservationModal'
 
 export default function JoinIf() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   return (
     <section className="bg-lilac py-24">
       <div className="mx-auto max-w-5xl px-6 md:px-10">
@@ -20,13 +24,21 @@ export default function JoinIf() {
           ))}
         </ul>
 
-        <a
-          href="#reserve-form"
-          className="mt-14 inline-flex items-center justify-center rounded-full bg-plum px-8 py-4 font-body text-base font-semibold text-cream transition-colors hover:bg-plum-deep"
+        <button
+          type="button"
+          onClick={() => setIsModalOpen(true)}
+          className="group mt-14 inline-flex items-center gap-2 rounded-full bg-gold px-8 py-4 font-body text-base font-semibold text-ink shadow-[0_10px_30px_-8px_rgba(217,164,65,0.5)] transition-all hover:scale-[1.02] hover:bg-gold-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream"
         >
           {ctaLabel}
-        </a>
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
+        </button>
       </div>
+
+      <ReservationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={() => setIsModalOpen(false)}
+      />
     </section>
   )
 }

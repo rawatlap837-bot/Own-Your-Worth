@@ -3,7 +3,7 @@ import { X } from 'lucide-react'
 
 // Paste your Apps Script Web App deployment URL here
 // (Deploy → New deployment → Web app → copy the /exec URL)
-const GOOGLE_SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwBaYwsp2U2nF_YoZ3dm46-HGcybd9WEpDxvbwp82080Fb_sGdGXmoZndJncVvFk89f/exec'
+const GOOGLE_SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz9YQX-fDmv95wOtG5BoKPwWjOQvD4rLvJ8Myc6p19KaFXa5YpJWgiuUtxFBFJm30Du/exec'
 
 export default function ReservationModal({ isOpen, onClose, onSuccess }) {
     const [name, setName] = useState('')
@@ -27,15 +27,19 @@ export default function ReservationModal({ isOpen, onClose, onSuccess }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setStatus('sending')
+
+        const payload = {
+            name: name.trim(),
+            email: emailAddr.trim(),
+            phone: phone.trim(),
+        }
+
         try {
-            // Apps Script web apps don't return CORS headers for fetch reads,
-            // so we use no-cors and treat the request as fire-and-forget.
-            // The data still lands in the sheet; we just can't read the response body.
             await fetch(GOOGLE_SHEETS_ENDPOINT, {
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ name, email: emailAddr, phone }),
+                body: JSON.stringify(payload),
             })
 
             setStatus('idle')
@@ -44,7 +48,7 @@ export default function ReservationModal({ isOpen, onClose, onSuccess }) {
             setPhone('')
             onSuccess()
         } catch (err) {
-            console.error(err)
+            console.error('Reservation submit failed:', err)
             setStatus('error')
         }
     }

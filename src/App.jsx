@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Nav from './components/Nav'
 import Hero from './components/Hero'
 import JoinIf from './components/JoinIf'
+import Secrets from './components/Secrets'
 import Lessons from './components/Lessons'
 import Coach from './components/Coach'
 import NotForYou from './components/NotForYou'
@@ -33,10 +33,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-cream">
-      <Nav onReserve={openReserveModal} />
       <main>
         <Hero onReserve={openReserveModal} />
         <JoinIf onReserve={openReserveModal} />
+        <Secrets onReserve={openReserveModal} />
         <Lessons onReserve={openReserveModal} />
         <Testimonials onReserve={openReserveModal} />
         <Coach />

@@ -32,11 +32,14 @@ const TESTIMONIALS = [
   },
 ];
 
-function TestimonialCard({ item }) {
+function TestimonialCard({ item, delay }) {
   const initial = item.name.startsWith("[") ? "?" : item.name.charAt(0);
 
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-white/10 bg-white/[0.04] p-8 text-center sm:p-9">
+    <div
+      className="animate-rise flex flex-col items-center rounded-2xl border border-white/10 bg-white/[0.04] p-8 text-center sm:p-9"
+      style={{ animationDelay: `${delay}s` }}
+    >
       <div className="relative -mt-20 mb-5 h-28 w-28 shrink-0 sm:-mt-24 sm:h-32 sm:w-32">
         {item.image ? (
           <img
@@ -69,7 +72,7 @@ export default function TestimonialSection({ onReserve }) {
   return (
     <section className="bg-[#1a0f2e] px-6 py-20 sm:py-28">
       <div className="mx-auto max-w-5xl">
-        <div className="mx-auto mb-16 max-w-xl text-center sm:mb-20">
+        <div className="animate-rise mx-auto mb-16 max-w-xl text-center sm:mb-20">
           <p className="mb-3 font-sans text-[13px] tracking-wide text-[#c9a15a]">
             Real women. Real transformations.
           </p>
@@ -80,11 +83,14 @@ export default function TestimonialSection({ onReserve }) {
 
         <div className="grid grid-cols-1 gap-x-6 gap-y-16 pt-16 sm:grid-cols-2 sm:gap-y-20">
           {TESTIMONIALS.map((item, i) => (
-            <TestimonialCard key={i} item={item} />
+            <TestimonialCard key={i} item={item} delay={0.15 + i * 0.12} />
           ))}
         </div>
 
-        <div className="mt-16 flex justify-center sm:mt-20">
+        <div
+          className="animate-rise mt-16 flex justify-center sm:mt-20"
+          style={{ animationDelay: `${0.15 + TESTIMONIALS.length * 0.12 + 0.1}s` }}
+        >
           <button
             type="button"
             onClick={onReserve}

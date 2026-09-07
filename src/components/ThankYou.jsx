@@ -4,7 +4,7 @@ import { CheckCircle2, ArrowRight, MessageCircle, Play, Pause, Volume2, VolumeX,
 const WHATSAPP_GROUP_LINK =
     'https://chat.whatsapp.com/JUMpqQUF19SLpL09hiCLFi?s=cl&p=i&mlu=4&ilr=4'
 
-const VIMEO_VIDEO_ID = '1223689460'
+const VIMEO_VIDEO_ID = '1224533583'
 
 export default function ThankYou({ onBackToHome }) {
     const iframeRef = useRef(null)
@@ -107,7 +107,7 @@ export default function ThankYou({ onBackToHome }) {
         `&dnt=1&transparent=0&keyboard=0&pip=0&playsinline=1`
 
     return (
-        <section className="relative min-h-screen overflow-hidden bg-ink pt-32 pb-24 md:pt-40 md:pb-32">
+        <section className="relative min-h-screen overflow-hidden bg-ink pt-12 pb-8 md:pt-12 md:pb-12">
 
             <div
                 aria-hidden="true"
@@ -169,6 +169,7 @@ export default function ThankYou({ onBackToHome }) {
                             </div>
                         )}
 
+                        {/* True end only — this is the sole place we cover the iframe */}
                         {!embedError && ended && (
                             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-ink">
                                 <button
@@ -218,7 +219,7 @@ export default function ThankYou({ onBackToHome }) {
                     </div>
                 </div>
                 <a
-                
+
                     href={WHATSAPP_GROUP_LINK}
                     target="_blank"
                     rel="noopener noreferrer"

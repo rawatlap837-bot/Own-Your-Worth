@@ -136,7 +136,7 @@ export default function Hero({ onReserve }) {
   }
 
   return (
-    <section className="relative overflow-hidden bg-[#F7F5FA] pb-16 pt-14 sm:pb-32 sm:pt-12 md:pb-12 md:pt-12">
+    <section className="relative overflow-hidden bg-[#F7F5FA] pb-16 pt-5 sm:pb-32 sm:pt-12 md:pb-12 md:pt-12">
       {/* one restrained accent wash, not scattered glow orbs */}
       <div
         aria-hidden="true"
@@ -196,12 +196,6 @@ export default function Hero({ onReserve }) {
                 title="Own Your Worth — watch the message from Namita"
                 allow="autoplay; fullscreen"
               />
-
-              {/* Live pulse badge on the video, top-left */}
-              <div className="absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1 backdrop-blur">
-                <PulseDot size="h-1.5 w-1.5" />
-                <span className="font-body text-[11px] font-medium uppercase tracking-wide text-white">Live</span>
-              </div>
 
               {ended && (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-[#1B1526]">

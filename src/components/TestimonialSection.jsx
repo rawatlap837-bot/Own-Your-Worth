@@ -8,32 +8,32 @@ import Testimonial4 from "./Assets/Testimonial4.jpeg";
 const TESTIMONIALS = [
   {
     quote:
-      "After my career break due to motherhood, I had completely lost confidence in starting again. Namita's one-on-one coaching and mindset sessions helped me rebuild that confidence and believe in myself.\n\nToday, I'm earning consistently and have created my own community where I teach fabric painting and help women become financially independent. I honestly never imagined I'd come this far. ❤️",
-    name: "[Shalini Bhora]",
+      "Thank you, Namita, for helping me restart my career after a long break, regain my financial independence, and build my own community. It all changed with just one call with you — and there was no looking back.",
+    name: "Shalini Bora",
     image: Testimonial1,
   },
   {
     quote:
-      "Reconnecting with Namita Ma'am in July 2025 has been one of the biggest blessings of my life. In just 10 months, I found myself again—stronger, clearer, and more confident.\n\nHer mentorship helped me regain my confidence, gain clarity in my career, excel at work, and earn a promotion. My relationships also became more meaningful, and most importantly, I learned to love myself again.\n\nHer guidance has truly brought growth, positivity, and balance into my life. Forever grateful! ❤️",
-    name: "[Prapti Bhatt]",
+      "Namita Ma'am helped me find myself again — stronger, clearer and more confident. In just 10 months, I gained career clarity, got promoted, and most importantly, fell in love with myself again.",
+    name: "Prapti Bhatt",
     image: Testimonial2,
   },
   {
     quote:
-      "I'm Monalisa from Germany. I've been on my mindset meditation journey with Namita for two years, and it has transformed me from within. I've become more patient, self-aware, and kinder to myself, and it has positively changed my relationships and daily life. I'm truly grateful to Namita for her gentle and powerful guidance. ❤️🙏",
-    name: "Monalisa Stapathy",
+      "Namita's coaching transformed me from the inside out. I became more patient, self-aware and kinder to myself — and it changed my relationships, daily life and how I handle stress.",
+    name: "Monalisa Satpathy",
     image: Testimonial3,
   },
   {
     quote:
-      "I started with Namita's yoga sessions and instantly connected with her positive, calming energy. That connection led me to her Energy Premier Silver Cycle, where her practical guidance on mindset, women empowerment, and healthy habits has created real changes in my thoughts, routines, and outlook.\n\nI've grown not just physically, but mentally and emotionally too. I'm truly grateful to have Namita as my yoga and mindset coach. ❤️",
-    name: "[Parul Panwar]",
+      "Namita's weekly mindset sessions have transformed my thoughts, routines and outlook on life. I've grown not just physically through yoga, but mentally and emotionally as well.",
+    name: "Parul Panwar",
     image: Testimonial4,
   },
 ];
 
 function TestimonialCard({ item, delay }) {
-  const initial = item.name.startsWith("[") ? "?" : item.name.charAt(0);
+  const initial = item.name.charAt(0);
 
   return (
     <div

@@ -145,7 +145,7 @@ export default function FAQSection({ onReserve }) {
           ))}
         </div>
 
-        <FadeIn className="mt-14 flex flex-col items-start gap-4 border-t border-[#e4ddf5] pt-10 sm:flex-row sm:items-center sm:justify-between">
+        <FadeIn className="mt-14 flex flex-col items-start gap-4 pt-10 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-serif text-[19px] text-[#2a1b3d]">
             Still have a question of your own?
           </p>

@@ -1,56 +1,86 @@
 import { HeartHandshake, ShieldCheck, Sparkles, Wallet, Heart, Sprout, ArrowRight } from 'lucide-react'
 import { ctaLabel } from '../data/content'
-import img1 from './Assets/img1.png'
-import img2 from './Assets/img2.png'
-import img3 from './Assets/img3.png'
-import img4 from './Assets/img4.png'
-import img5 from './Assets/img5.png'
+import img1 from './Assets/img1.jpeg'
+import img2 from './Assets/img2.jpeg'
+import img3 from './Assets/img3.jpeg'
+import img4 from './Assets/img4.jpeg'
+import img5 from './Assets/img5.jpeg'
 import img6 from './Assets/img6.jpeg'
+
+const highlight = 'font-semibold text-plum-deep underline decoration-gold/60 underline-offset-2'
 
 const benefits = [
   {
     icon: HeartHandshake,
     title: 'Inner Peace',
-    description: 'Feel more peaceful, fulfilled & connected with yourself.',
+    description: (
+      <>
+        Feel more <span className={highlight}>peaceful, fulfilled & connected</span> with yourself.
+      </>
+    ),
     image: img1,
   },
   {
     icon: ShieldCheck,
     title: 'Self-Trust',
-    description: 'Trust your abilities, choices & decisions again.',
+    description: (
+      <>
+        Trust your <span className={highlight}>abilities, choices & decisions</span> again.
+      </>
+    ),
     image: img2,
   },
   {
     icon: Sparkles,
     title: 'Purpose',
-    description: 'Rediscover what excites you and create something meaningful of your own.',
+    description: (
+      <>
+        Rediscover what excites you and <span className={highlight}>create something meaningful</span> of
+        your own.
+      </>
+    ),
     image: img3,
   },
   {
     icon: Wallet,
     title: 'Financial Independence',
-    description: 'Use your strengths & skills to create your own income and greater freedom.',
+    description: (
+      <>
+        Use your strengths & skills to create your own income and{' '}
+        <span className={highlight}>greater freedom</span>.
+      </>
+    ),
     image: img4,
   },
   {
     icon: Heart,
     title: 'Role Model',
-    description: 'Show your children what it means to believe in yourself and follow your dreams.',
+    description: (
+      <>
+        Show your children what it means to{' '}
+        <span className={highlight}>believe in yourself and follow your dreams</span>.
+      </>
+    ),
     image: img5,
   },
   {
     icon: Sprout,
     title: 'Personal Growth',
-    description: 'Grow beyond your roles and become the woman you\u2019re capable of becoming.',
+    description: (
+      <>
+        Grow beyond your roles and become the{' '}
+        <span className={highlight}>woman you're capable of becoming</span>.
+      </>
+    ),
     image: img6,
   },
 ]
 
 export default function JoinIf({ onReserve }) {
   return (
-    <section className="bg-lilac py-24">
+    <section className="bg-lilac py-14">
       <div className="mx-auto max-w-5xl px-6 md:px-10">
-        <h2 className="animate-rise max-w-xl font-display text-3xl md:text-4xl text-plum-deep balance">
+        <h2 className="animate-rise max-w-xl font-display capitalize text-3xl md:text-4xl text-plum-deep balance">
           Why owning your worth can change everything for a mother
         </h2>
 
@@ -73,22 +103,24 @@ export default function JoinIf({ onReserve }) {
               </div>
 
               <div className="p-6">
-                <p className="font-body font-semibold text-plum-deep">{title}</p>
-                <p className="mt-1.5 text-plum-deep/80 leading-relaxed">{description}</p>
+                <p className="font-body text-[20px] font-semibold text-plum-deep sm:text-xl">{title}</p>
+                <p className="mt-2 text-plum-deep/80 leading-relaxed">{description}</p>
               </div>
             </li>
           ))}
         </ul>
 
-        <button
-          type="button"
-          onClick={onReserve}
-          className="animate-rise group mt-14 inline-flex items-center gap-2 rounded-full bg-gold px-8 py-4 font-body text-base font-semibold text-ink shadow-[0_10px_30px_-8px_rgba(217,164,65,0.5)] transition-all hover:scale-[1.02] hover:bg-gold-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream"
-          style={{ animationDelay: `${0.12 + benefits.length * 0.1 + 0.1}s` }}
-        >
-          {ctaLabel}
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
-        </button>
+        <div className="mt-14 flex justify-center">
+          <button
+            type="button"
+            onClick={onReserve}
+            className="animate-rise group inline-flex items-center gap-2 rounded-full bg-gold px-8 py-4 font-body text-base font-semibold text-ink shadow-[0_10px_30px_-8px_rgba(217,164,65,0.5)] transition-all hover:scale-[1.02] hover:bg-gold-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream"
+            style={{ animationDelay: `${0.12 + benefits.length * 0.1 + 0.1}s` }}
+          >
+            {ctaLabel}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
+          </button>
+        </div>
       </div>
     </section>
   )

@@ -43,7 +43,7 @@ export default function Lessons({ onReserve }) {
     <section className="bg-cream py-24">
       <div className="mx-auto max-w-4xl px-6 md:px-10">
         <FadeIn>
-          <h2 className="font-display text-3xl md:text-4xl text-plum-deep balance">
+          <h2 className="font-display text-3xl capitalize md:text-4xl text-plum-deep balance">
             What you'll learn in the masterclass
           </h2>
         </FadeIn>

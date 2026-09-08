@@ -2,10 +2,7 @@ import { useState } from 'react'
 import Hero from './components/Hero'
 import JoinIf from './components/JoinIf'
 import Secrets from './components/Secrets'
-import Lessons from './components/Lessons'
 import Coach from './components/Coach'
-import NotForYou from './components/NotForYou'
-import WhyDifferent from './components/WhyDifferent'
 import FinalCTA from './components/FinalCTA'
 import Faq from './components/Faq'
 import Testimonials from './components/TestimonialSection'
@@ -37,12 +34,9 @@ export default function App() {
         <Hero onReserve={openReserveModal} />
         <JoinIf onReserve={openReserveModal} />
         <Secrets onReserve={openReserveModal} />
-        <Lessons onReserve={openReserveModal} />
         <Testimonials onReserve={openReserveModal} />
         <Coach />
         <Faq onReserve={openReserveModal} />
-        <NotForYou onReserve={openReserveModal} />
-        <WhyDifferent onReserve={openReserveModal} />
         <FinalCTA onReserve={openReserveModal} />
       </main>
       <ReservationModal

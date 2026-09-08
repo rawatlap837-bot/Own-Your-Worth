@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { ArrowRight } from 'lucide-react'
+import { ctaLabel } from '../data/content'
 import secret1 from './Assets/1st.jpeg'
 import secret2 from './Assets/2nd.jpeg'
 import secret3 from './Assets/3rd.jpeg'
@@ -38,12 +40,12 @@ function FadeIn({ children, className = '', delay = 0 }) {
   )
 }
 
-export default function Secrets() {
+export default function Secrets({ onReserve }) {
   return (
-    <section className="bg-ink py-24">
+    <section className="bg-ink py-12">
       <div className="mx-auto max-w-5xl px-6 md:px-10">
         <FadeIn>
-          <h2 className="max-w-2xl font-display text-3xl md:text-4xl text-cream balance">
+          <h2 className="max-w-2xl font-display capitalize text-3xl md:text-4xl text-cream balance">
             3 secrets you'll discover before you leave
           </h2>
         </FadeIn>
@@ -56,7 +58,7 @@ export default function Secrets() {
               <p className="font-body text-sm font-semibold uppercase tracking-wide text-amethyst-pale">
                 Secret 1
               </p>
-              <h3 className="mt-2 font-display text-2xl text-cream">
+              <h3 className="mt-2 font-display capitalize text-2xl text-cream">
                 How to find yourself again
               </h3>
               <ul className="mt-5 space-y-3 text-amethyst-pale/90">
@@ -93,7 +95,7 @@ export default function Secrets() {
               <p className="font-body text-sm font-semibold uppercase tracking-wide text-amethyst-pale">
                 Secret 2
               </p>
-              <h3 className="mt-2 font-display text-2xl text-cream">
+              <h3 className="mt-2 font-display capitalize text-2xl text-cream">
                 How to start believing in yourself again
               </h3>
               <ul className="mt-5 space-y-3 text-amethyst-pale/90">
@@ -116,7 +118,7 @@ export default function Secrets() {
               <p className="font-body text-sm font-semibold uppercase tracking-wide text-amethyst-pale">
                 Secret 3
               </p>
-              <h3 className="mt-2 font-display text-2xl text-cream">
+              <h3 className="mt-2 font-display capitalize text-2xl text-cream">
                 How to create a life that has both
               </h3>
               <ul className="mt-5 space-y-3 text-amethyst-pale/90">
@@ -140,6 +142,16 @@ export default function Secrets() {
             </FadeIn>
           </div>
 
+          <div className="relative mx-auto flex max-w-5xl justify-center px-6 md:px-10">
+            <button
+              type="button"
+              onClick={onReserve}
+              className="animate-rise group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-6 py-3.5 font-body text-base font-semibold text-ink shadow-[0_10px_30px_-8px_rgba(217,164,65,0.5)] transition-all hover:bg-gold-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream sm:w-auto sm:px-8 sm:py-4"
+            >
+              {ctaLabel}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
+            </button>
+          </div>
         </div>
       </div>
     </section>

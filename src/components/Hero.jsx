@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import {
   CalendarDays,
   Clock3,
@@ -18,13 +18,34 @@ import { event, ctaLabel } from '../data/content'
 
 // Move these into data/content.js once you're happy with the copy —
 // kept local for now since they're new to this layout.
+// Each entry is JSX so the key phrase can be highlighted/underlined inline.
+const highlight = 'font-semibold text-[#241B36] underline decoration-[#B8863A]/50 underline-offset-2'
+
 const discoverPoints = [
-  'After years of putting everyone\u2019s needs first, rediscover the woman behind the roles of mother, wife & caregiver.',
-  'Break free from self-doubt, guilt & limiting beliefs that have been keeping you stuck.',
-  'Rebuild your self-trust & confidence so you can start believing in yourself and taking action again.',
-  'Overcome the fear of restarting after a long career break and gain the confidence to pursue your career, growth or something of your own.',
-  'Rediscover your dreams, strengths & purpose and give yourself permission to want more \u2014 without feeling guilty for choosing yourself.',
-  'Take your first step towards emotional & financial freedom while being present for your family \u2014 because you don\u2019t have to choose.',
+  <>
+    After years of putting everyone's needs first, rediscover{' '}
+    <span className={highlight}>the woman behind the roles</span> of mother, wife & caregiver.
+  </>,
+  <>
+    Break free from <span className={highlight}>self-doubt, guilt & limiting beliefs</span> that have been
+    keeping you stuck.
+  </>,
+  <>
+    Rebuild your <span className={highlight}>self-trust & confidence</span> so you can start believing in
+    yourself and taking action again.
+  </>,
+  <>
+    Overcome the fear of restarting after a long career break and gain the confidence to pursue your{' '}
+    <span className={highlight}>career, growth or something of your own</span>.
+  </>,
+  <>
+    Rediscover your dreams, strengths & purpose and give yourself{' '}
+    <span className={highlight}>permission to want more</span>.
+  </>,
+  <>
+    Take your first step towards <span className={highlight}>emotional & financial freedom</span> while
+    being present for your family.
+  </>,
 ]
 
 const coach = {
@@ -57,13 +78,27 @@ function useCountdown(minutes = 15) {
   return { mins, secs }
 }
 
+function formatTime(seconds = 0) {
+  if (!Number.isFinite(seconds)) return '0:00'
+  const m = Math.floor(seconds / 60)
+  const s = Math.floor(seconds % 60)
+  return `${m}:${String(s).padStart(2, '0')}`
+}
+
 export default function Hero({ onReserve }) {
   const iframeRef = useRef(null)
   const playerRef = useRef(null)
+  const progressBarRef = useRef(null)
+  const feedbackTimeoutRef = useRef(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [ready, setReady] = useState(false)
   const [ended, setEnded] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [isScrubbing, setIsScrubbing] = useState(false)
+  // Which icon (play/pause) to briefly flash in the center after a tap-to-toggle
+  const [feedbackIcon, setFeedbackIcon] = useState(null)
   const { mins, secs } = useCountdown(15)
 
   useEffect(() => {
@@ -75,6 +110,11 @@ export default function Hero({ onReserve }) {
       playerRef.current = player
 
       player.setVolume(0).catch(() => {})
+
+      player.getDuration().then((d) => {
+        if (!cancelled) setDuration(d)
+      }).catch(() => {})
+
       player.on('play', () => {
         setIsPlaying(true)
         setEnded(false)
@@ -83,6 +123,13 @@ export default function Hero({ onReserve }) {
       player.on('ended', () => {
         setIsPlaying(false)
         setEnded(true)
+      })
+      player.on('timeupdate', (data) => {
+        // Skip updates while the user is actively dragging the scrubber
+        if (!isScrubbing) {
+          setCurrentTime(data.seconds)
+          if (data.duration) setDuration(data.duration)
+        }
       })
 
       setReady(true)
@@ -108,12 +155,28 @@ export default function Hero({ onReserve }) {
       if (playerRef.current) {
         playerRef.current.unload().catch(() => {})
       }
+      if (feedbackTimeoutRef.current) {
+        clearTimeout(feedbackTimeoutRef.current)
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const flashFeedbackIcon = (icon) => {
+    setFeedbackIcon(icon)
+    if (feedbackTimeoutRef.current) clearTimeout(feedbackTimeoutRef.current)
+    feedbackTimeoutRef.current = setTimeout(() => setFeedbackIcon(null), 500)
+  }
 
   const togglePlay = () => {
     if (!playerRef.current) return
-    isPlaying ? playerRef.current.pause() : playerRef.current.play()
+    if (isPlaying) {
+      playerRef.current.pause()
+      flashFeedbackIcon('pause')
+    } else {
+      playerRef.current.play()
+      flashFeedbackIcon('play')
+    }
   }
 
   const toggleMute = () => {
@@ -135,6 +198,50 @@ export default function Hero({ onReserve }) {
     }
   }
 
+  // Convert a pointer x-position on the progress bar into a seek time
+  const getTimeFromClientX = useCallback(
+    (clientX) => {
+      const bar = progressBarRef.current
+      if (!bar || !duration) return 0
+      const rect = bar.getBoundingClientRect()
+      const ratio = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1)
+      return ratio * duration
+    },
+    [duration]
+  )
+
+  const seekToClientX = useCallback(
+    (clientX) => {
+      const time = getTimeFromClientX(clientX)
+      setCurrentTime(time)
+      if (playerRef.current) {
+        playerRef.current.setCurrentTime(time).catch(() => {})
+      }
+    },
+    [getTimeFromClientX]
+  )
+
+  const handleProgressPointerDown = (e) => {
+    if (!ready || !duration) return
+    e.stopPropagation()
+    setIsScrubbing(true)
+    seekToClientX(e.clientX)
+
+    const handleMove = (moveEvent) => {
+      seekToClientX(moveEvent.clientX)
+    }
+    const handleUp = (upEvent) => {
+      seekToClientX(upEvent.clientX)
+      setIsScrubbing(false)
+      window.removeEventListener('pointermove', handleMove)
+      window.removeEventListener('pointerup', handleUp)
+    }
+    window.addEventListener('pointermove', handleMove)
+    window.addEventListener('pointerup', handleUp)
+  }
+
+  const progressPercent = duration ? Math.min((currentTime / duration) * 100, 100) : 0
+
   return (
     <section className="relative overflow-hidden bg-[#F7F5FA] pb-16 pt-5 sm:pb-32 sm:pt-12 md:pb-12 md:pt-12">
       {/* one restrained accent wash, not scattered glow orbs */}
@@ -146,7 +253,7 @@ export default function Hero({ onReserve }) {
       <div className="relative mx-auto max-w-5xl px-6 md:px-10">
         {/* Eyebrow — live pulse dot */}
         <div className="animate-rise flex items-center justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#B8863A]/40 bg-[#B8863A]/[0.08] px-4 py-1.5 font-body text-xs font-medium tracking-wide text-[#8A6A2F] sm:text-sm">
+          <span className="inline-flex items-center gap-2 rounded-full border uppercase border-[#B8863A]/40 bg-[#B8863A]/[0.08] px-6 py-1.5 font-body text-[11px] font-medium tracking-wide text-[#8A6A2F] sm:text-[14px]">
             <PulseDot />
             Free live masterclass "for mothers"
           </span>
@@ -155,7 +262,7 @@ export default function Hero({ onReserve }) {
         {/* Headline + subtext, centered */}
         <div className="mt-7 text-center">
           <h1
-            className="animate-rise mx-auto max-w-3xl font-display text-3xl font-bold leading-[1.2] tracking-tight text-[#241B36] sm:text-[50px]"
+            className="animate-rise mx-auto max-w-3xl font-display capitalize text-[30px] font-bold leading-[1.2] tracking-tight text-[#241B36] sm:text-[50px]"
             style={{ animationDelay: '0.12s' }}
           >
             What if you could <span className="text-[#6E4E93]">find yourself again</span>, without giving up the
@@ -169,16 +276,6 @@ export default function Hero({ onReserve }) {
             Feel visible. Feel valued. Rebuild your confidence. Reclaim your purpose. Create your financial
             independence.
           </p>
-
-          <button
-            type="button"
-            onClick={onReserve}
-            className="animate-rise group mt-8 inline-flex w-full ring-4 items-center justify-center gap-2 rounded-full bg-[#241B36] px-6 py-3.5 font-body text-base font-semibold text-white shadow-[0_12px_28px_-12px_rgba(36,27,54,0.45)] transition-all hover:bg-[#332A48] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241B36] sm:w-auto sm:px-8 sm:py-4"
-            style={{ animationDelay: '0.36s' }}
-          >
-            {ctaLabel}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
-          </button>
         </div>
 
         {/* Divider */}
@@ -196,6 +293,46 @@ export default function Hero({ onReserve }) {
                 title="Own Your Worth — watch the message from Namita"
                 allow="autoplay; fullscreen"
               />
+
+              {/* Tap/click anywhere on the video to play or pause.
+                  This sits above the iframe (which would otherwise swallow
+                  the click itself, since it's a separate document) but below
+                  the progress bar / control row, so those stay independently
+                  clickable via stacking order. */}
+              {!ended && (
+                <button
+                  type="button"
+                  onClick={togglePlay}
+                  disabled={!ready}
+                  aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                  className="absolute inset-0 z-10 cursor-pointer disabled:cursor-default"
+                />
+              )}
+
+              {/* Center play/pause icon — flashes briefly on toggle for feedback.
+                  Self-contained fade (no Tailwind config changes needed). */}
+              {feedbackIcon && (
+                <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+                  <style>{`
+                    @keyframes heroVideoIconFlash {
+                      0% { opacity: 0; transform: scale(0.85); }
+                      15% { opacity: 1; transform: scale(1); }
+                      75% { opacity: 1; transform: scale(1); }
+                      100% { opacity: 0; transform: scale(1.05); }
+                    }
+                  `}</style>
+                  <span
+                    className="flex h-14 w-14 items-center justify-center rounded-full bg-black/55 text-white backdrop-blur"
+                    style={{ animation: 'heroVideoIconFlash 500ms ease-out' }}
+                  >
+                    {feedbackIcon === 'play' ? (
+                      <Play className="h-6 w-6 translate-x-[1px]" strokeWidth={2} />
+                    ) : (
+                      <Pause className="h-6 w-6" strokeWidth={2} />
+                    )}
+                  </span>
+                </div>
+              )}
 
               {ended && (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-[#1B1526]">
@@ -221,31 +358,69 @@ export default function Hero({ onReserve }) {
               )}
 
               {!ended && (
-                <div className="absolute inset-0 flex items-end justify-between p-4">
-                  <button
-                    type="button"
-                    onClick={togglePlay}
-                    disabled={!ready}
-                    aria-label={isPlaying ? 'Pause video' : 'Play video'}
-                    className="flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition hover:bg-black/70 disabled:opacity-50"
-                  >
-                    {isPlaying ? (
-                      <Pause className="h-5 w-5" strokeWidth={2} />
-                    ) : (
-                      <Play className="h-5 w-5 translate-x-[1px]" strokeWidth={2} />
-                    )}
-                  </button>
+                <>
+                  {/* Bottom gradient so controls stay legible over any frame */}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent" />
 
-                  <button
-                    type="button"
-                    onClick={toggleMute}
-                    disabled={!ready}
-                    aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-                    className="flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition hover:bg-black/70 disabled:opacity-50"
+                  {/* Progress bar — click or drag to seek. Sits above the tap-to-toggle
+                      layer (z-20 vs z-10) so scrubbing never also toggles play/pause. */}
+                  <div
+                    ref={progressBarRef}
+                    onPointerDown={handleProgressPointerDown}
+                    role="slider"
+                    aria-label="Video progress"
+                    aria-valuemin={0}
+                    aria-valuemax={Math.floor(duration) || 0}
+                    aria-valuenow={Math.floor(currentTime)}
+                    className="absolute inset-x-0 bottom-9 z-20 flex h-5 cursor-pointer touch-none items-center px-3 sm:bottom-11 sm:px-4"
                   >
-                    {isMuted ? <VolumeX className="h-5 w-5" strokeWidth={2} /> : <Volume2 className="h-5 w-5" strokeWidth={2} />}
-                  </button>
-                </div>
+                    <div className="relative h-1.5 w-full rounded-full bg-white/30 sm:h-2">
+                      <div
+                        className="absolute inset-y-0 left-0 rounded-full bg-[#B8863A]"
+                        style={{ width: `${progressPercent}%` }}
+                      />
+                      {/* draggable knob — always visible, bigger hit target on mobile */}
+                      <div
+                        className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 -translate-x-1/2 rounded-full border-2 border-white bg-[#B8863A] shadow sm:h-4 sm:w-4"
+                        style={{ left: `${progressPercent}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Control row — small, consistent icon buttons at every breakpoint.
+                      Also z-20 so these stay independently clickable above the
+                      tap-to-toggle layer. */}
+                  <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between gap-2 px-3 py-2 sm:px-3.5 sm:py-2.5">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={togglePlay}
+                        disabled={!ready}
+                        aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-black/55 text-white ring-1 ring-white/10 backdrop-blur transition hover:bg-black/75 active:scale-95 disabled:opacity-50 sm:h-8 sm:w-8"
+                      >
+                        {isPlaying ? (
+                          <Pause className="h-3.5 w-3.5" strokeWidth={2} />
+                        ) : (
+                          <Play className="h-3.5 w-3.5 translate-x-[1px]" strokeWidth={2} />
+                        )}
+                      </button>
+                      <span className="truncate rounded-full bg-black/40 px-2 py-0.5 font-body text-[10px] tabular-nums text-white/90 backdrop-blur">
+                        {formatTime(currentTime)} / {formatTime(duration)}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={toggleMute}
+                      disabled={!ready}
+                      aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-black/55 text-white ring-1 ring-white/10 backdrop-blur transition hover:bg-black/75 active:scale-95 disabled:opacity-50 sm:h-8 sm:w-8"
+                    >
+                      {isMuted ? <VolumeX className="h-3.5 w-3.5" strokeWidth={2} /> : <Volume2 className="h-3.5 w-3.5" strokeWidth={2} />}
+                    </button>
+                  </div>
+                </>
               )}
             </div>
 
@@ -300,8 +475,10 @@ export default function Hero({ onReserve }) {
                 <span className="font-body text-sm font-semibold">Plus, discover a proven 4-step formula</span>
               </div>
               <p className="mt-2 font-body text-sm text-[#5B5570]">
-                A simple, practical framework to get clear on what you truly want, strengthen your belief in
-                yourself, take confident action and move towards the life you've always wanted.
+                A simple, practical framework to get clear on what you truly want, strengthen your{' '}
+                <span className={highlight}>belief in yourself</span>, take{' '}
+                <span className={highlight}>confident action</span> and move towards the{' '}
+                <span className={highlight}>life you've always wanted</span>.
               </p>
             </div>
 
@@ -321,14 +498,23 @@ export default function Hero({ onReserve }) {
               In this powerful 2-hour masterclass, you will discover how to:
             </p>
             <ul className="mt-5 space-y-4">
-              {discoverPoints.map((point) => (
-                <li key={point} className="flex items-start gap-3">
+              {discoverPoints.map((point, i) => (
+                <li key={i} className="flex items-start gap-3">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#B8863A]" strokeWidth={1.75} />
                   <span className="font-body text-sm text-[#3F3A52] sm:text-base">{point}</span>
                 </li>
               ))}
             </ul>
           </div>
+           <button
+            type="button"
+            onClick={onReserve}
+            className="animate-rise group  inline-flex w-full ring-4 items-center justify-center gap-2 rounded-full bg-[#241B36] px-6 py-3.5 font-body text-base font-semibold text-white shadow-[0_12px_28px_-12px_rgba(36,27,54,0.45)] transition-all hover:bg-[#332A48] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241B36] sm:w-auto sm:px-8 sm:py-4"
+            style={{ animationDelay: '0.36s' }}
+          >
+            {ctaLabel}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
+          </button>
         </div>
       </div>
     </section>

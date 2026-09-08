@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { CheckCircle2, ArrowRight, MessageCircle, Play, Pause, Volume2, VolumeX, RotateCcw, AlertCircle } from 'lucide-react'
 
 const WHATSAPP_GROUP_LINK =
@@ -6,14 +6,28 @@ const WHATSAPP_GROUP_LINK =
 
 const VIMEO_VIDEO_ID = '1224533583'
 
+function formatTime(seconds = 0) {
+    if (!Number.isFinite(seconds)) return '0:00'
+    const m = Math.floor(seconds / 60)
+    const s = Math.floor(seconds % 60)
+    return `${m}:${String(s).padStart(2, '0')}`
+}
+
 export default function ThankYou({ onBackToHome }) {
     const iframeRef = useRef(null)
     const playerRef = useRef(null)
+    const progressBarRef = useRef(null)
+    const feedbackTimeoutRef = useRef(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [isMuted, setIsMuted] = useState(true)
     const [ready, setReady] = useState(false)
     const [ended, setEnded] = useState(false)
     const [embedError, setEmbedError] = useState(false)
+    const [currentTime, setCurrentTime] = useState(0)
+    const [duration, setDuration] = useState(0)
+    const [isScrubbing, setIsScrubbing] = useState(false)
+    // Which icon (play/pause) to briefly flash in the center after a tap-to-toggle
+    const [feedbackIcon, setFeedbackIcon] = useState(null)
 
     useEffect(() => {
         let cancelled = false
@@ -34,7 +48,12 @@ export default function ThankYou({ onBackToHome }) {
                     setEmbedError(true)
                 })
 
-            player.setVolume(0).catch(() => {})
+            player.setVolume(0).catch(() => { })
+
+            player.getDuration().then((d) => {
+                if (!cancelled) setDuration(d)
+            }).catch(() => { })
+
             player.on('play', () => {
                 setIsPlaying(true)
                 setEnded(false)
@@ -43,6 +62,13 @@ export default function ThankYou({ onBackToHome }) {
             player.on('ended', () => {
                 setIsPlaying(false)
                 setEnded(true)
+            })
+            player.on('timeupdate', (data) => {
+                // Skip updates while the user is actively dragging the scrubber
+                if (!isScrubbing) {
+                    setCurrentTime(data.seconds)
+                    if (data.duration) setDuration(data.duration)
+                }
             })
         }
 
@@ -65,27 +91,39 @@ export default function ThankYou({ onBackToHome }) {
         return () => {
             cancelled = true
             if (playerRef.current) {
-                playerRef.current.unload().catch(() => {})
+                playerRef.current.unload().catch(() => { })
+            }
+            if (feedbackTimeoutRef.current) {
+                clearTimeout(feedbackTimeoutRef.current)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const flashFeedbackIcon = (icon) => {
+        setFeedbackIcon(icon)
+        if (feedbackTimeoutRef.current) clearTimeout(feedbackTimeoutRef.current)
+        feedbackTimeoutRef.current = setTimeout(() => setFeedbackIcon(null), 500)
+    }
 
     const togglePlay = () => {
         if (!playerRef.current) return
         if (isPlaying) {
             playerRef.current.pause().catch((err) => console.warn('Pause failed:', err))
+            flashFeedbackIcon('pause')
         } else {
             playerRef.current.play().catch((err) => {
                 console.warn('Play failed — likely an embed privacy restriction:', err)
                 setEmbedError(true)
             })
+            flashFeedbackIcon('play')
         }
     }
 
     const toggleMute = () => {
         if (!playerRef.current) return
         const nextMuted = !isMuted
-        playerRef.current.setVolume(nextMuted ? 0 : 1).catch(() => {})
+        playerRef.current.setVolume(nextMuted ? 0 : 1).catch(() => { })
         setIsMuted(nextMuted)
     }
 
@@ -100,6 +138,50 @@ export default function ThankYou({ onBackToHome }) {
             setEnded(false)
         }
     }
+
+    // Convert a pointer x-position on the progress bar into a seek time
+    const getTimeFromClientX = useCallback(
+        (clientX) => {
+            const bar = progressBarRef.current
+            if (!bar || !duration) return 0
+            const rect = bar.getBoundingClientRect()
+            const ratio = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1)
+            return ratio * duration
+        },
+        [duration]
+    )
+
+    const seekToClientX = useCallback(
+        (clientX) => {
+            const time = getTimeFromClientX(clientX)
+            setCurrentTime(time)
+            if (playerRef.current) {
+                playerRef.current.setCurrentTime(time).catch(() => { })
+            }
+        },
+        [getTimeFromClientX]
+    )
+
+    const handleProgressPointerDown = (e) => {
+        if (!ready || !duration) return
+        e.stopPropagation()
+        setIsScrubbing(true)
+        seekToClientX(e.clientX)
+
+        const handleMove = (moveEvent) => {
+            seekToClientX(moveEvent.clientX)
+        }
+        const handleUp = (upEvent) => {
+            seekToClientX(upEvent.clientX)
+            setIsScrubbing(false)
+            window.removeEventListener('pointermove', handleMove)
+            window.removeEventListener('pointerup', handleUp)
+        }
+        window.addEventListener('pointermove', handleMove)
+        window.addEventListener('pointerup', handleUp)
+    }
+
+    const progressPercent = duration ? Math.min((currentTime / duration) * 100, 100) : 0
 
     const vimeoSrc =
         `https://player.vimeo.com/video/${VIMEO_VIDEO_ID}` +
@@ -123,14 +205,14 @@ export default function ThankYou({ onBackToHome }) {
 
                 <div className="animate-rise inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-sm text-amethyst-pale">
                     <CheckCircle2 className="h-4 w-4 text-gold" strokeWidth={1.75} />
-                    Your seat is reserved
+                    Your Seat Is Reserved
                 </div>
 
                 <h1
-                    className="animate-rise mt-8 font-display text-4xl font-medium leading-[1.2] text-cream sm:text-5xl"
+                    className="animate-rise mt-8 font-display text-[30px] font-medium leading-[1.2] text-cream sm:text-5xl"
                     style={{ animationDelay: '0.12s' }}
                 >
-                    You're in.
+                    Thank You. You're In.
                 </h1>
 
                 <p
@@ -155,6 +237,46 @@ export default function ThankYou({ onBackToHome }) {
                             title="Thank you — watch this quick video"
                             allow="autoplay; fullscreen"
                         />
+
+                        {/* Tap/click anywhere on the video to play or pause.
+                            Sits above the iframe (which would otherwise swallow
+                            the click itself, since it's a separate document) but
+                            below the progress bar / control row (z-10 vs z-20),
+                            so those stay independently clickable via stacking order. */}
+                        {!embedError && !ended && (
+                            <button
+                                type="button"
+                                onClick={togglePlay}
+                                disabled={!ready}
+                                aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                                className="absolute inset-0 z-[5] cursor-pointer disabled:cursor-default"
+                            />
+                        )}
+
+                        {/* Center play/pause icon — flashes briefly on toggle for feedback.
+                            Self-contained fade (no Tailwind config changes needed). */}
+                        {feedbackIcon && (
+                            <div className="pointer-events-none absolute inset-0 z-[6] flex items-center justify-center">
+                                <style>{`
+                                    @keyframes thankYouVideoIconFlash {
+                                        0% { opacity: 0; transform: scale(0.85); }
+                                        15% { opacity: 1; transform: scale(1); }
+                                        75% { opacity: 1; transform: scale(1); }
+                                        100% { opacity: 0; transform: scale(1.05); }
+                                    }
+                                `}</style>
+                                <span
+                                    className="flex h-14 w-14 items-center justify-center rounded-full bg-black/55 text-cream backdrop-blur"
+                                    style={{ animation: 'thankYouVideoIconFlash 500ms ease-out' }}
+                                >
+                                    {feedbackIcon === 'play' ? (
+                                        <Play className="h-6 w-6 translate-x-[1px]" strokeWidth={2} />
+                                    ) : (
+                                        <Pause className="h-6 w-6" strokeWidth={2} />
+                                    )}
+                                </span>
+                            </div>
+                        )}
 
                         {/* Embed-restricted warning — only shows if the player never connected */}
                         {embedError && (
@@ -194,27 +316,68 @@ export default function ThankYou({ onBackToHome }) {
                         )}
 
                         {!embedError && !ended && (
-                            <div className="absolute inset-0 z-10 flex items-end justify-between p-4">
-                                <button
-                                    type="button"
-                                    onClick={togglePlay}
-                                    disabled={!ready}
-                                    aria-label={isPlaying ? 'Pause video' : 'Play video'}
-                                    className="flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-cream backdrop-blur transition hover:bg-black/80 disabled:opacity-50"
-                                >
-                                    {isPlaying ? <Pause className="h-5 w-5" strokeWidth={2} /> : <Play className="h-5 w-5 translate-x-[1px]" strokeWidth={2} />}
-                                </button>
+                            <>
+                                {/* Bottom gradient so controls stay legible over any frame */}
+                                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent" />
 
-                                <button
-                                    type="button"
-                                    onClick={toggleMute}
-                                    disabled={!ready}
-                                    aria-label={isMuted ? 'Unmute video' : 'Mute video'}
-                                    className="flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-cream backdrop-blur transition hover:bg-black/80 disabled:opacity-50"
+                                {/* Progress bar — click or drag to seek. Sits above the tap-to-toggle
+                                    layer (z-20 vs z-[5]) so scrubbing never also toggles play/pause. */}
+                                <div
+                                    ref={progressBarRef}
+                                    onPointerDown={handleProgressPointerDown}
+                                    role="slider"
+                                    aria-label="Video progress"
+                                    aria-valuemin={0}
+                                    aria-valuemax={Math.floor(duration) || 0}
+                                    aria-valuenow={Math.floor(currentTime)}
+                                    className="absolute inset-x-0 bottom-9 z-20 flex h-5 cursor-pointer touch-none items-center px-3 sm:bottom-11 sm:px-4"
                                 >
-                                    {isMuted ? <VolumeX className="h-5 w-5" strokeWidth={2} /> : <Volume2 className="h-5 w-5" strokeWidth={2} />}
-                                </button>
-                            </div>
+                                    <div className="relative h-1.5 w-full rounded-full bg-white/30 sm:h-2">
+                                        <div
+                                            className="absolute inset-y-0 left-0 rounded-full bg-gold"
+                                            style={{ width: `${progressPercent}%` }}
+                                        />
+                                        {/* draggable knob — always visible, bigger hit target on mobile */}
+                                        <div
+                                            className="absolute top-1/2 h-3.5 w-3.5 -translate-y-1/2 -translate-x-1/2 rounded-full border-2 border-cream bg-gold shadow sm:h-4 sm:w-4"
+                                            style={{ left: `${progressPercent}%` }}
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Control row — play/pause, time, mute. Also z-20 so these stay
+                                    independently clickable above the tap-to-toggle layer. */}
+                                <div className="absolute inset-x-0 bottom-0 z-20 flex items-center justify-between gap-2 px-3 py-2 sm:px-3.5 sm:py-2.5">
+                                    <div className="flex min-w-0 items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={togglePlay}
+                                            disabled={!ready}
+                                            aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                                            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-black/55 text-cream ring-1 ring-white/10 backdrop-blur transition hover:bg-black/75 active:scale-95 disabled:opacity-50 sm:h-8 sm:w-8"
+                                        >
+                                            {isPlaying ? (
+                                                <Pause className="h-3.5 w-3.5" strokeWidth={2} />
+                                            ) : (
+                                                <Play className="h-3.5 w-3.5 translate-x-[1px]" strokeWidth={2} />
+                                            )}
+                                        </button>
+                                        <span className="truncate rounded-full bg-black/40 px-2 py-0.5 font-body text-[10px] tabular-nums text-cream/90 backdrop-blur">
+                                            {formatTime(currentTime)} / {formatTime(duration)}
+                                        </span>
+                                    </div>
+
+                                    <button
+                                        type="button"
+                                        onClick={toggleMute}
+                                        disabled={!ready}
+                                        aria-label={isMuted ? 'Unmute video' : 'Mute video'}
+                                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-black/55 text-cream ring-1 ring-white/10 backdrop-blur transition hover:bg-black/75 active:scale-95 disabled:opacity-50 sm:h-8 sm:w-8"
+                                    >
+                                        {isMuted ? <VolumeX className="h-3.5 w-3.5" strokeWidth={2} /> : <Volume2 className="h-3.5 w-3.5" strokeWidth={2} />}
+                                    </button>
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>
@@ -236,7 +399,7 @@ export default function ThankYou({ onBackToHome }) {
                     className="animate-rise group mt-6 inline-flex items-center gap-1.5 text-sm text-amethyst-pale/80 underline-offset-4 transition-colors hover:text-cream hover:underline"
                     style={{ animationDelay: '0.72s' }}
                 >
-                    Back to home
+                    Back to Home
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
                 </button>
 

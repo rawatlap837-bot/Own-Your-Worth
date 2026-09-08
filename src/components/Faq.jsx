@@ -81,15 +81,21 @@ function FadeIn({ children, className = "", delay = 0 }) {
 
 function FaqRow({ item, isOpen, onToggle }) {
   return (
-    <div className="border-b border-[#e4ddf5]">
+    <div
+      className={`rounded-2xl border transition-colors duration-300 ${
+        isOpen
+          ? "border-[#c9a15a]/40 bg-white shadow-[0_12px_30px_-20px_rgba(42,27,61,0.35)]"
+          : "border-transparent"
+      }`}
+    >
       <button
         onClick={onToggle}
         aria-expanded={isOpen}
-        className="flex w-full items-start justify-between gap-6 py-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a15a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf7f0] rounded-sm"
+        className="flex w-full items-start justify-between gap-6 px-5 py-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a15a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#faf7f0] rounded-2xl"
       >
         <span
-          className={`font-serif text-[17px] sm:text-[19px] leading-snug transition-colors ${
-            isOpen ? "text-[#2a1b3d]" : "text-[#2a1b3d]/85"
+          className={`font-serif text-[17px] sm:text-[19px] leading-snug transition-colors duration-300 ${
+            isOpen ? "font-semibold text-[#c9a15a]" : "text-[#2a1b3d]/85"
           }`}
         >
           {item.q}
@@ -109,7 +115,7 @@ function FaqRow({ item, isOpen, onToggle }) {
         style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
-          <p className="max-w-2xl pb-6 pr-10 font-sans text-[15px] leading-relaxed text-[#4a3f5c]">
+          <p className="max-w-2xl px-5 pb-6 pr-10 font-sans text-[15px] leading-relaxed text-[#4a3f5c]">
             {item.a}
           </p>
         </div>
@@ -122,18 +128,18 @@ export default function FAQSection({ onReserve }) {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section className="bg-[#faf7f0] px-6 py-20 sm:py-28">
+    <section className="bg-[#faf7f0] px-6 py-12 sm:py-28">
       <div className="mx-auto max-w-3xl">
         <FadeIn className="mb-12 sm:mb-16">
-          <p className="mb-3 font-sans text-[13px] tracking-wide text-[#c9a15a]">
+          <p className="mb-3 font-sans text-[15px] tracking-wide text-[#c9a15a]">
             Common questions
           </p>
           <h2 className="font-serif text-[32px] sm:text-[40px] leading-[1.15] text-[#2a1b3d]">
-            You might be asking yourself...
+            Frequently Asked Questions
           </h2>
         </FadeIn>
 
-        <div>
+        <div className="space-y-2">
           {FAQS.map((item, i) => (
             <FadeIn key={i} delay={Math.min(i * 60, 300)}>
               <FaqRow
@@ -145,7 +151,7 @@ export default function FAQSection({ onReserve }) {
           ))}
         </div>
 
-        <FadeIn className="mt-14 flex flex-col items-start gap-4 pt-10 sm:flex-row sm:items-center sm:justify-between">
+        <FadeIn className="mt-14 flex flex-col items-center gap-4 pt-10 text-center">
           <p className="font-serif text-[19px] text-[#2a1b3d]">
             Still have a question of your own?
           </p>

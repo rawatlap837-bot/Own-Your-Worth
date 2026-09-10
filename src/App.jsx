@@ -32,8 +32,8 @@ export default function App() {
     <div className="min-h-screen bg-cream">
       <main>
         <Hero onReserve={openReserveModal} />
-        <JoinIf onReserve={openReserveModal} />
         <Secrets onReserve={openReserveModal} />
+        <JoinIf onReserve={openReserveModal} />
         <Testimonials onReserve={openReserveModal} />
         <Coach />
         <Faq onReserve={openReserveModal} />

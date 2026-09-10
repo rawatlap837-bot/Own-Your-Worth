@@ -59,8 +59,8 @@ const coach = {
 function PulseDot({ className = '', size = 'h-2 w-2' }) {
   return (
     <span className={`relative inline-flex ${size} shrink-0 ${className}`}>
-      <span className={`absolute inline-flex ${size} animate-ping rounded-full bg-[#B8863A] opacity-75`} />
-      <span className={`relative inline-flex ${size} rounded-full bg-[#B8863A]`} />
+      <span className={`absolute inline-flex ${size} animate-ping rounded-full bg-[#dabaff] opacity-75`} />
+      <span className={`relative inline-flex ${size} rounded-full bg-[#d5b0ff]`} />
     </span>
   )
 }
@@ -109,11 +109,11 @@ export default function Hero({ onReserve }) {
       const player = new window.Vimeo.Player(iframeRef.current)
       playerRef.current = player
 
-      player.setVolume(0).catch(() => {})
+      player.setVolume(0).catch(() => { })
 
       player.getDuration().then((d) => {
         if (!cancelled) setDuration(d)
-      }).catch(() => {})
+      }).catch(() => { })
 
       player.on('play', () => {
         setIsPlaying(true)
@@ -153,7 +153,7 @@ export default function Hero({ onReserve }) {
     return () => {
       cancelled = true
       if (playerRef.current) {
-        playerRef.current.unload().catch(() => {})
+        playerRef.current.unload().catch(() => { })
       }
       if (feedbackTimeoutRef.current) {
         clearTimeout(feedbackTimeoutRef.current)
@@ -182,7 +182,7 @@ export default function Hero({ onReserve }) {
   const toggleMute = () => {
     if (!playerRef.current) return
     const nextMuted = !isMuted
-    playerRef.current.setVolume(nextMuted ? 0 : 1).catch(() => {})
+    playerRef.current.setVolume(nextMuted ? 0 : 1).catch(() => { })
     setIsMuted(nextMuted)
   }
 
@@ -215,7 +215,7 @@ export default function Hero({ onReserve }) {
       const time = getTimeFromClientX(clientX)
       setCurrentTime(time)
       if (playerRef.current) {
-        playerRef.current.setCurrentTime(time).catch(() => {})
+        playerRef.current.setCurrentTime(time).catch(() => { })
       }
     },
     [getTimeFromClientX]
@@ -253,7 +253,7 @@ export default function Hero({ onReserve }) {
       <div className="relative mx-auto max-w-5xl px-6 md:px-10">
         {/* Eyebrow — live pulse dot */}
         <div className="animate-rise flex items-center justify-center">
-          <span className="inline-flex items-center gap-2 rounded-full border uppercase border-[#B8863A]/40 bg-[#B8863A]/[0.08] px-6 py-1.5 font-body text-[11px] font-medium tracking-wide text-[#8A6A2F] sm:text-[14px]">
+          <span className="inline-flex items-center gap-2 rounded-full border uppercase border-[#6E4E93]/40 bg-[#6E4E93]/[5] px-6 py-1.5 font-body text-[11px] font-medium tracking-wide text-[#FFFF] sm:text-[14px]">
             <PulseDot />
             Free live masterclass "for mothers"
           </span>
@@ -451,8 +451,8 @@ export default function Hero({ onReserve }) {
             {/* Date / time / live / language — sits under the video/coach card */}
             <div className="mt-6 grid grid-cols-2 gap-3">
               {[
-                { icon: CalendarDays, label: 'Date', value: 'Wed, 24 Sep', live: false },
-                { icon: Clock3, label: 'Time', value: '11:00 AM', live: false },
+                { icon: CalendarDays, label: 'Date', value: 'Wed, 23 Sep', live: false },
+                { icon: Clock3, label: 'Time', value: '11:00 AM [IST]', live: false },
                 { icon: Radio, label: 'Live', value: 'On Zoom', live: true },
                 { icon: Languages, label: 'Language', value: 'Hindi + English', live: false },
               ].map(({ icon: Icon, label, value, live }) => (
@@ -469,7 +469,7 @@ export default function Hero({ onReserve }) {
             </div>
 
             {/* Bonus formula */}
-            <div className="mt-6 rounded-xl border border-dashed border-[#B8863A]/50 bg-[#B8863A]/[0.06] p-5">
+            {/* <div className="mt-6 rounded-xl border border-dashed border-[#B8863A]/50 bg-[#B8863A]/[0.06] p-5">
               <div className="flex items-center gap-2 text-[#8A6A2F]">
                 <Sparkles className="h-4 w-4" strokeWidth={1.75} />
                 <span className="font-body text-sm font-semibold">Plus, discover a proven 4-step formula</span>
@@ -480,24 +480,33 @@ export default function Hero({ onReserve }) {
                 <span className={highlight}>confident action</span> and move towards the{' '}
                 <span className={highlight}>life you've always wanted</span>.
               </p>
-            </div>
+            </div> */}
 
-            <p className="mt-6 text-center font-display text-base italic text-[#6E4E93] md:text-left">
+            {/* <p className="mt-6 text-center font-display text-base italic text-[#6E4E93] md:text-left">
               Because you are worthy of having it all.
-            </p>
+            </p> */}
+            <button
+            type="button"
+            onClick={onReserve}
+            className="animate-rise group mt-5 inline-flex w-full ring-4 items-center justify-center gap-2 rounded-full bg-[#241B36] px-6 py-3.5 font-body text-base font-semibold text-white shadow-[0_12px_28px_-12px_rgba(36,27,54,0.45)] transition-all hover:bg-[#332A48] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241B36] sm:w-auto sm:px-8 sm:py-4"
+            style={{ animationDelay: '0.36s' }}
+          >
+            {ctaLabel}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
+          </button>
           </div>
 
           <div
             className="animate-rise min-w-0 rounded-2xl border-2 border-[#B8863A]/25 bg-white p-6 shadow-[0_12px_30px_-20px_rgba(36,27,54,0.3)] sm:p-8"
             style={{ animationDelay: '0.6s' }}
           >
-            <h2 className="font-display text-xl font-bold text-[#241B36] sm:text-2xl">
+            <h2 className="font-display capitalize text-xl font-bold text-[#241B36] sm:text-2xl">
               What you'll discover in this masterclass
             </h2>
-            <p className="mt-2 font-body text-sm text-[#5B5570]">
+            <p className="mt-2 font-body capitalize text-sm text-[#5B5570]">
               In this powerful 2-hour masterclass, you will discover how to:
             </p>
-            <ul className="mt-5 space-y-4">
+            <ul className="mt-5 capitalize space-y-4">
               {discoverPoints.map((point, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#B8863A]" strokeWidth={1.75} />
@@ -506,15 +515,6 @@ export default function Hero({ onReserve }) {
               ))}
             </ul>
           </div>
-           <button
-            type="button"
-            onClick={onReserve}
-            className="animate-rise group  inline-flex w-full ring-4 items-center justify-center gap-2 rounded-full bg-[#241B36] px-6 py-3.5 font-body text-base font-semibold text-white shadow-[0_12px_28px_-12px_rgba(36,27,54,0.45)] transition-all hover:bg-[#332A48] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241B36] sm:w-auto sm:px-8 sm:py-4"
-            style={{ animationDelay: '0.36s' }}
-          >
-            {ctaLabel}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
-          </button>
         </div>
       </div>
     </section>

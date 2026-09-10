@@ -26,7 +26,7 @@ const coach = {
       <span className={highlight}>Founder</span> — Energypreneur Hub
     </>,
     <>
-      <span className={highlight}>4+ Years of Experience</span> in coaching & personal transformation
+      <span className={highlight}>5+ Years of Experience</span> in coaching & personal transformation
     </>,
     <>
       Women's <span className={highlight}>Empowerment Speaker & Mentor</span>

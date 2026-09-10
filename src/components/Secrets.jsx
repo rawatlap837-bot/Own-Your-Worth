@@ -30,9 +30,8 @@ function FadeIn({ children, className = '', delay = 0 }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      } ${className}`}
+      className={`transition-all duration-700 ease-out ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        } ${className}`}
       style={{ transitionDelay: visible ? `${delay}ms` : '0ms' }}
     >
       {children}
@@ -123,13 +122,13 @@ export default function Secrets({ onReserve }) {
               </h3>
               <ul className="mt-5 space-y-3 text-amethyst-pale/90">
                 <li>
-                  Get clear on your <span className="font-semibold text-cream">purpose & what you truly want</span>
+                  Discover a proven <span className="font-semibold text-cream">4-step formula to turn your desires into a clear, actionable path</span>
                 </li>
                 <li>
-                  Take confident steps towards <span className="font-semibold text-cream">career growth & financial independence</span>
+                  Learn how to <span className="font-semibold text-cream">balance your personal dreams, family and responsibilities</span> without constantly putting yourself last
                 </li>
                 <li>
-                  Create a fulfilling life <span className="font-semibold text-cream">without choosing between your family and your dreams</span>
+                  Create a life where you can <span className="font-semibold text-cream">grow, thrive and have what matters to you</span> — without sacrificing the family you love
                 </li>
               </ul>
             </FadeIn>

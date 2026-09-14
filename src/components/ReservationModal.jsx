@@ -105,7 +105,7 @@ export default function ReservationModal({ isOpen, onClose, onSuccess }) {
                         />
                     </div>
                     <div>
-                        <label htmlFor="phone" className="mb-1 block text-sm text-cream/80">Mobile number</label>
+                        <label htmlFor="phone" className="mb-1 block text-sm text-cream/80">Whatsapp number</label>
                         <input
                             id="phone"
                             type="tel"

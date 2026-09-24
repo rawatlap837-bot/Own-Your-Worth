@@ -451,7 +451,7 @@ export default function Hero({ onReserve }) {
             {/* Date / time / live / language — sits under the video/coach card */}
             <div className="mt-6 grid grid-cols-2 gap-3">
               {[
-                { icon: CalendarDays, label: 'Date', value: 'Wed, 23 Sep', live: false },
+                { icon: CalendarDays, label: 'Date', value: 'Wed, 7 Oct', live: false },
                 { icon: Clock3, label: 'Time', value: '11:00 AM [IST]', live: false },
                 { icon: Radio, label: 'Live', value: 'On Zoom', live: true },
                 { icon: Languages, label: 'Language', value: 'Hindi + English', live: false },

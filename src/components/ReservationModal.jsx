@@ -1,16 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { X } from 'lucide-react'
 
-// Paste your Apps Script Web App deployment URL here
-// (Deploy → New deployment → Web app → copy the /exec URL)
-const GOOGLE_SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz9YQX-fDmv95wOtG5BoKPwWjOQvD4rLvJ8Myc6p19KaFXa5YpJWgiuUtxFBFJm30Du/exec'
+const TAGMANGO_URL = 'https://learn.coachnamitagupta.com/l/2e3363fc9d'
 
-export default function ReservationModal({ isOpen, onClose, onSuccess }) {
-    const [name, setName] = useState('')
-    const [emailAddr, setEmailAddr] = useState('')
-    const [phone, setPhone] = useState('')
-    const [status, setStatus] = useState('idle') // idle | sending | error
-
+export default function ReservationModal({ isOpen, onClose }) {
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : ''
         return () => { document.body.style.overflow = '' }
@@ -23,35 +16,6 @@ export default function ReservationModal({ isOpen, onClose, onSuccess }) {
     }, [isOpen, onClose])
 
     if (!isOpen) return null
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        setStatus('sending')
-
-        const payload = {
-            name: name.trim(),
-            email: emailAddr.trim(),
-            phone: phone.trim(),
-        }
-
-        try {
-            await fetch(GOOGLE_SHEETS_ENDPOINT, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify(payload),
-            })
-
-            setStatus('idle')
-            setName('')
-            setEmailAddr('')
-            setPhone('')
-            onSuccess()
-        } catch (err) {
-            console.error('Reservation submit failed:', err)
-            setStatus('error')
-        }
-    }
 
     return (
         <div
@@ -76,62 +40,18 @@ export default function ReservationModal({ isOpen, onClose, onSuccess }) {
                     Reserve your seat
                 </h2>
                 <p className="mt-2 text-sm text-amethyst-pale/90 font-body">
-                    Wednesday, 24th Sep · 11:00 AM · LIVE on Zoom
+                    Wednesday, 7th Oct · 11:00 AM · LIVE on Zoom
                 </p>
-
-                <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                    <div>
-                        <label htmlFor="name" className="mb-1 block text-sm text-cream/80">Name</label>
-                        <input
-                            id="name"
-                            type="text"
-                            required
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-cream placeholder:text-cream/40 focus:border-gold focus:outline-none"
-                            placeholder="Your name"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="email" className="mb-1 block text-sm text-cream/80">Email</label>
-                        <input
-                            id="email"
-                            type="email"
-                            required
-                            value={emailAddr}
-                            onChange={(e) => setEmailAddr(e.target.value)}
-                            className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-cream placeholder:text-cream/40 focus:border-gold focus:outline-none"
-                            placeholder="you@example.com"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="phone" className="mb-1 block text-sm text-cream/80">Whatsapp number</label>
-                        <input
-                            id="phone"
-                            type="tel"
-                            required
-                            inputMode="tel"
-                            autoComplete="tel"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-2.5 text-cream placeholder:text-cream/40 focus:border-gold focus:outline-none"
-                            placeholder="+91 98765 43210"
-                        />
-                    </div>
-
-                    {status === 'error' && (
-                        <p className="text-sm text-red-400">Something went wrong — please try again.</p>
-                    )}
-
-                    <button
-                        type="submit"
-                        disabled={status === 'sending'}
-                        className="w-full rounded-full bg-gold px-8 py-3.5 font-body text-base font-semibold text-ink transition-all hover:scale-[1.01] hover:bg-gold-soft disabled:opacity-60"
-                    >
-                        {status === 'sending' ? 'Reserving…' : 'Reserve My Seat'}
-                    </button>
-                </form>
+                <p className="mt-4 text-sm text-cream/70 font-body">
+                    You'll be taken to our secure registration page to enter your details.
+                </p>
+                <a
+                    href={TAGMANGO_URL}
+                    className="mt-6 block w-full rounded-full bg-gold px-8 py-3.5 text-center font-body text-base font-semibold text-ink transition-all hover:scale-[1.01] hover:bg-gold-soft"
+                >
+                    Continue to Reserve My Seat
+                </a>
             </div>
-        </div>
+        </div >
     )
 }

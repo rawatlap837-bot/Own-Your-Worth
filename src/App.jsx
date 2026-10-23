@@ -7,7 +7,6 @@ import FinalCTA from './components/FinalCTA'
 import Faq from './components/Faq'
 import Testimonials from './components/TestimonialSection'
 import ReservationModal from './components/ReservationModal'
-import ThankYou from './components/ThankYou'
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -23,10 +22,6 @@ export default function App() {
   }
 
   const backToHome = () => setHasReserved(false)
-
-  if (hasReserved) {
-    return <ThankYou onBackToHome={backToHome} />
-  }
 
   return (
     <div className="min-h-screen bg-cream">

@@ -451,7 +451,7 @@ export default function Hero({ onReserve }) {
             {/* Date / time / live / language — sits under the video/coach card */}
             <div className="mt-6 grid grid-cols-2 gap-3">
               {[
-                { icon: CalendarDays, label: 'Date', value: 'Wed, 7 Oct', live: false },
+                { icon: CalendarDays, label: 'Date', value: 'Wed, 28 Oct', live: false },
                 { icon: Clock3, label: 'Time', value: '11:00 AM [IST]', live: false },
                 { icon: Radio, label: 'Live', value: 'On Zoom', live: true },
                 { icon: Languages, label: 'Language', value: 'Hindi + English', live: false },
@@ -486,14 +486,14 @@ export default function Hero({ onReserve }) {
               Because you are worthy of having it all.
             </p> */}
             <button
-            type="button"
-            onClick={onReserve}
-            className="animate-rise group mt-5 inline-flex w-full ring-4 items-center justify-center gap-2 rounded-full bg-[#241B36] px-6 py-3.5 font-body text-base font-semibold text-white shadow-[0_12px_28px_-12px_rgba(36,27,54,0.45)] transition-all hover:bg-[#332A48] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241B36] sm:w-auto sm:px-8 sm:py-4"
-            style={{ animationDelay: '0.36s' }}
-          >
-            {ctaLabel}
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
-          </button>
+              type="button"
+              onClick={onReserve}
+              className="animate-rise group mt-5 inline-flex w-full ring-4 items-center justify-center gap-2 rounded-full bg-[#241B36] px-6 py-3.5 font-body text-base font-semibold text-white shadow-[0_12px_28px_-12px_rgba(36,27,54,0.45)] transition-all hover:bg-[#332A48] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#241B36] sm:w-auto sm:px-8 sm:py-4"
+              style={{ animationDelay: '0.36s' }}
+            >
+              {ctaLabel}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
+            </button>
           </div>
 
           <div

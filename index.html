@@ -16,7 +16,7 @@
       rel="stylesheet"
     />
 
-    <!-- Meta Pixel Code -->
+    <!-- Meta Pixel Code (Main page) -->
     <script>
       !(function (f, b, e, v, n, t, s) {
         if (f.fbq) return;
@@ -42,8 +42,10 @@
         "https://connect.facebook.net/en_US/fbevents.js",
       );
       fbq("init", "4454121491400543");
-      fbq("track", "PageView"+ "LeadView");
-      fbq("track", "ContantView");
+      fbq("track", "PageView");
+      fbq("track", "ViewContent", {
+        content_name: "Own Your Worth Workshop for Mothers",
+      });
     </script>
     <!-- End Meta Pixel Code -->
   </head>

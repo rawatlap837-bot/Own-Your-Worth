@@ -119,15 +119,18 @@ export default function Hero({ onReserve }) {
       }).catch(() => { })
 
       player.on('play', () => {
+        if (cancelled) return
         setIsPlaying(true)
         setEnded(false)
       })
-      player.on('pause', () => setIsPlaying(false))
+      player.on('pause', () => { if (!cancelled) setIsPlaying(false) })
       player.on('ended', () => {
+        if (cancelled) return
         setIsPlaying(false)
         setEnded(true)
       })
       player.on('timeupdate', (data) => {
+        if (cancelled) return
         // Skip updates while the user is actively dragging the scrubber
         if (!isScrubbing) {
           setCurrentTime(data.seconds)
@@ -155,9 +158,10 @@ export default function Hero({ onReserve }) {
 
     return () => {
       cancelled = true
-      if (playerRef.current) {
-        playerRef.current.unload().catch(() => { })
-      }
+      // Vimeo's unload() navigates the embedded frame. Chrome blocks that
+      // operation in some embedding contexts and reports a permissions error.
+      // Keep the iframe intact; detach our reference so React can clean up safely.
+      playerRef.current = null
       if (feedbackTimeoutRef.current) {
         clearTimeout(feedbackTimeoutRef.current)
       }

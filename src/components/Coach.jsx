@@ -102,6 +102,8 @@ export default function Coach({ onReserve }) {
               <img
                 src={NamitaMam}
                 alt={coach.name}
+                loading="lazy"
+                decoding="async"
                 onError={() => setPhotoFailed(true)}
                 className="relative h-48 w-48 rounded-full object-cover object-top ring-2 ring-gold/40 sm:h-60 sm:w-60 md:h-80 md:w-80"
               />

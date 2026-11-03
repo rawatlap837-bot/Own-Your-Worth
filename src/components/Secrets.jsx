@@ -77,6 +77,8 @@ export default function Secrets({ onReserve }) {
                 src={secret1}
                 alt="A woman rediscovering herself beyond her roles"
                 className="h-72 w-full object-cover md:h-80"
+                loading="lazy"
+                decoding="async"
               />
             </FadeIn>
           </div>
@@ -88,6 +90,8 @@ export default function Secrets({ onReserve }) {
                 src={secret2}
                 alt="A woman rebuilding her self-trust and confidence"
                 className="h-72 w-full object-cover md:h-80"
+                loading="lazy"
+                decoding="async"
               />
             </FadeIn>
             <FadeIn delay={100}>
@@ -137,6 +141,8 @@ export default function Secrets({ onReserve }) {
                 src={secret3}
                 alt="A woman building a life that holds both family and ambition"
                 className="h-72 w-full object-cover md:h-80"
+                loading="lazy"
+                decoding="async"
               />
             </FadeIn>
           </div>

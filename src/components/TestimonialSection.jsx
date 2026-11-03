@@ -70,6 +70,8 @@ function TestimonialCard({ item, delay }) {
           <img
             src={item.image}
             alt={item.name}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full rounded-full border-2 border-[#c9a15a] object-cover object-top"
           />
         ) : (

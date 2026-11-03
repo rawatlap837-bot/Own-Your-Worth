@@ -93,6 +93,7 @@ export default function Hero({ onReserve }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [ready, setReady] = useState(false)
+  const [loadVideo, setLoadVideo] = useState(false)
   const [ended, setEnded] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -103,6 +104,8 @@ export default function Hero({ onReserve }) {
 
   useEffect(() => {
     let cancelled = false
+
+    if (!loadVideo) return () => { cancelled = true }
 
     function initPlayer() {
       if (cancelled || !iframeRef.current || !window.Vimeo) return
@@ -160,7 +163,24 @@ export default function Hero({ onReserve }) {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [loadVideo])
+
+  useEffect(() => {
+    const frame = iframeRef.current
+    if (!frame || loadVideo) return
+    if (!('IntersectionObserver' in window)) {
+      setLoadVideo(true)
+      return
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setLoadVideo(true)
+        observer.disconnect()
+      }
+    }, { rootMargin: '200px' })
+    observer.observe(frame)
+    return () => observer.disconnect()
+  }, [loadVideo])
 
   const flashFeedbackIcon = (icon) => {
     setFeedbackIcon(icon)
@@ -287,11 +307,12 @@ export default function Hero({ onReserve }) {
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl border-2 border-[#B8863A]/25 bg-[#1B1526] shadow-[0_20px_45px_-25px_rgba(36,27,54,0.35)]">
               <iframe
                 ref={iframeRef}
-                src="https://player.vimeo.com/video/1224533584?controls=0&muted=1&autopause=0"
+                src={loadVideo ? 'https://player.vimeo.com/video/1224533584?controls=0&muted=1&autopause=0' : undefined}
                 className="absolute inset-0 h-full w-full"
                 style={{ border: 0 }}
                 title="Own Your Worth — watch the message from Namita"
-                allow="autoplay; fullscreen"
+                allow="autoplay; fullscreen; picture-in-picture"
+                loading="lazy"
               />
 
               {/* Tap/click anywhere on the video to play or pause.

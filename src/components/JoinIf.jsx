@@ -96,6 +96,8 @@ export default function JoinIf({ onReserve }) {
                   src={image}
                   alt={title}
                   className="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <span className="absolute bottom-3 left-3 flex h-10 w-10 items-center justify-center rounded-full bg-cream shadow-md">
                   <Icon className="h-5 w-5 text-amethyst" strokeWidth={2} />

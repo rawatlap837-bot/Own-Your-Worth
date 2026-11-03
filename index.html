@@ -16,8 +16,10 @@
       rel="stylesheet"
     />
 
-    <!-- Meta Pixel Code (Main page) -->
+    <!-- Load analytics after the page is interactive so it doesn't compete with first paint. -->
     <script>
+      window.addEventListener('load', function () {
+        window.setTimeout(function () {
       !(function (f, b, e, v, n, t, s) {
         if (f.fbq) return;
         n = f.fbq = function () {
@@ -46,17 +48,12 @@
       fbq("track", "ViewContent", {
         content_name: "Own Your Worth Workshop for Mothers",
       });
+        }, 1500);
+      }, { once: true });
     </script>
     <!-- End Meta Pixel Code -->
   </head>
   <body>
-    <noscript
-      ><img
-        height="1"
-        width="1"
-        style="display: none"
-        src="https://www.facebook.com/tr?id=4454121491400543&ev=PageView&noscript=1"
-    /></noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

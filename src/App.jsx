@@ -29,7 +29,7 @@ export default function App() {
       <main>
         <Hero onReserve={openReserveModal} />
         <Secrets onReserve={openReserveModal} />
-        <JoinIf onReserve={openReserveModal} />
+        {/* <JoinIf onReserve={openReserveModal} /> */}
         <AttendingBenefits onReserve={openReserveModal} />
         <Testimonials onReserve={openReserveModal} />
         <Coach />

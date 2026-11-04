@@ -46,7 +46,7 @@ const benefits = [
 
 export default function AttendingBenefits({ onReserve }) {
   return (
-    <section className="bg-[#fff8f4] px-5 py-14 sm:px-6 sm:py-20">
+    <section className="bg-[#fff8f4] px-0 py-14 sm:px-6 sm:py-20">
       <div className="mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
           <p className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#a3813f] sm:text-sm">
@@ -58,16 +58,18 @@ export default function AttendingBenefits({ onReserve }) {
           <div className="mx-auto mt-5 h-px w-32 bg-gradient-to-r from-transparent via-gold to-transparent" />
         </div>
 
-        <ul className="mt-9 grid grid-cols-1 gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+        <ul className="mt-9 grid grid-cols-1 gap-4 sm:mt-12 sm:gap-5">
           {benefits.map(({ image, title }) => (
-            <li key={title} className="overflow-hidden rounded-2xl shadow-[0_10px_25px_-20px_rgba(111,18,56,0.55)]">
-              <img
-                src={image}
-                alt={title}
-                className="block h-auto w-full"
-                loading="lazy"
-                decoding="async"
-              />
+            <li key={title} className="min-w-0 overflow-hidden rounded-lg shadow-[0_10px_25px_-20px_rgba(111,18,56,0.55)] sm:rounded-2xl">
+              <div className="overflow-hidden">
+                <img
+                  src={image}
+                  alt={title}
+                  className="block h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </li>
           ))}
         </ul>

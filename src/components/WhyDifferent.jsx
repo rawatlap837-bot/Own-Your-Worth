@@ -7,7 +7,7 @@ export default function WhyDifferent({ onReserve }) {
     <section className="bg-cream py-24">
       <div className="mx-auto max-w-5xl px-6 md:px-10">
         <h2 className="animate-rise max-w-lg font-display text-3xl md:text-4xl text-plum-deep balance">
-          Why Own Your Worth is different
+          Why Own Your Worth Is Different
         </h2>
 
         <div className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2">

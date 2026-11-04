@@ -104,7 +104,7 @@ export default function TestimonialSection({ onReserve }) {
             Real women. Real transformations.
           </p>
           <h2 className="font-serif text-[32px] capitalize leading-[1.15] text-[#3a2650] sm:text-[40px]">
-            Their words, not ours.
+            Their Words, Not Ours.
           </h2>
         </div>
 

@@ -297,8 +297,8 @@ export default function Hero({ onReserve }) {
             className="animate-rise mx-auto max-w-4xl font-display text-[30px] font-bold leading-[1.2] tracking-tight text-[#241B36] sm:text-[50px]"
             style={{ animationDelay: '0.12s' }}
           >
-            Learn how to <span className="text-[#6E4E93]">rebuild your confidence, reclaim your identity</span> and
-            feel valued without losing yourself in motherhood, using my 3C Framework.
+            Learn How To <span className="text-[#6E4E93]">Rebuild Your Confidence, Reclaim Your Identity</span> And
+            Feel Valued Without Losing Yourself In Motherhood, Using My 3C Framework.
           </h1>
 
           <p
@@ -479,7 +479,9 @@ export default function Hero({ onReserve }) {
                 <span className="font-body text-xs text-[#5B5570]">{coach.rating}/5</span>
               </div>
             </div>
-            <p className="mt-3 text-center font-body text-xs text-[#8A6A2F] md:text-left">{coach.proof}</p>
+            <p className="mt-4 max-w-md font-body text-sm font-semibold leading-relaxed text-[#8A6A2F] sm:text-base">
+              Helping 100+ Mothers Build Emotional Confidence &amp; Financial Independence
+            </p>
 
             {/* Date / time / live / language — sits under the video/coach card */}
             <div className="mt-6 grid grid-cols-2 gap-3">
@@ -534,7 +536,7 @@ export default function Hero({ onReserve }) {
             style={{ animationDelay: '0.6s' }}
           >
             <h2 className="font-display text-xl font-bold text-[#241B36] sm:text-2xl">
-              What you'll discover in this masterclass
+              What You'll Discover In This Masterclass
             </h2>
             <p className="mt-2 font-body text-sm text-[#5B5570]">
               In this powerful 2-hour masterclass, you will discover how to:

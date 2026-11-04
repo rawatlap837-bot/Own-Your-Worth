@@ -37,7 +37,7 @@ export default function ReservationModal({ isOpen, onClose }) {
                 </button>
 
                 <h2 id="reservation-modal-title" className="font-display text-2xl text-cream">
-                    Reserve your seat
+                    Reserve Your Seat
                 </h2>
                 <p className="mt-2 text-sm text-amethyst-pale/90 font-body">
                     Wednesday, 7th Oct · 11:00 AM · LIVE on Zoom

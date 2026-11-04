@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { ctaLabel } from '../data/content'
 
-const secret1 = '/IMG_7198.webp'
+const secret1 = '/IMG_7266.webp'
 const secret2 = '/IMG_7202.webp'
 const secret3 = '/IMG_7201.webp'
 
@@ -95,7 +95,7 @@ export default function Secrets({ onReserve }) {
                 2. Connect with Your Loved Ones
               </p>
               <h3 className="mt-2 font-display capitalize text-2xl text-cream">
-                Connect with Your Loved Ones
+                Connect With Your Loved Ones
               </h3>
               <p className="mt-3 leading-relaxed text-amethyst-pale/90">
                 Build healthier relationships, communicate with confidence, and nurture meaningful connections while

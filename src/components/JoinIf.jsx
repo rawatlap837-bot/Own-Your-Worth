@@ -81,7 +81,7 @@ export default function JoinIf({ onReserve }) {
     <section className="bg-lilac py-14">
       <div className="mx-auto max-w-5xl px-6 md:px-10">
         <h2 className="animate-rise max-w-xl font-display capitalize text-3xl md:text-4xl text-plum-deep balance">
-          Why owning your worth can change everything for a mother
+          Why Owning Your Worth Can Change Everything for a Mother
         </h2>
 
         <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

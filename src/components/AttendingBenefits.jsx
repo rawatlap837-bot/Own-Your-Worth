@@ -58,7 +58,7 @@ export default function AttendingBenefits({ onReserve }) {
           <div className="mx-auto mt-5 h-px w-32 bg-gradient-to-r from-transparent via-gold to-transparent" />
         </div>
 
-        <ul className="mt-9 grid grid-cols-1 gap-4 sm:mt-12 sm:gap-5">
+        <ul className="mt-9 grid grid-cols-2 gap-2 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
           {benefits.map(({ image, title }) => (
             <li key={title} className="min-w-0 overflow-hidden rounded-lg shadow-[0_10px_25px_-20px_rgba(111,18,56,0.55)] sm:rounded-2xl">
               <div className="overflow-hidden">

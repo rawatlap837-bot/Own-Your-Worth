@@ -119,7 +119,7 @@ export default function FinalCTA({ onReserve }) {
 
         <div className="relative mx-auto max-w-2xl px-6 text-center md:px-10">
           <h2 className="animate-rise font-display capitalize text-3xl text-cream balance md:text-5xl">
-            The Life You Want Isn't Selfish.
+            Choosing the life you want is not selfish.
           </h2>
 
           <p className="animate-rise mt-6 text-cream/75 leading-relaxed" style={{ animationDelay: '0.12s' }}>

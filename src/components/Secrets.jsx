@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { ctaLabel } from '../data/content'
-import secret1 from './Assets/1st.jpeg'
-import secret2 from './Assets/2nd.jpeg'
-import secret3 from './Assets/3rd.jpeg'
+
+const secret1 = '/IMG_7198.webp'
+const secret2 = '/IMG_7202.webp'
+const secret3 = '/IMG_7201.webp'
 
 function FadeIn({ children, className = '', delay = 0 }) {
   const ref = useRef(null)
@@ -45,38 +46,33 @@ export default function Secrets({ onReserve }) {
       <div className="mx-auto max-w-5xl px-6 md:px-10">
         <FadeIn>
           <h2 className="max-w-2xl font-display capitalize text-3xl md:text-4xl text-cream balance">
-            3 secrets you'll discover before you leave
+            Discover My Proven 3C Framework to Create a Fulfilling Life
           </h2>
+          <p className="mt-4 max-w-3xl font-body text-base leading-relaxed text-amethyst-pale/90 sm:text-lg">
+            Before you leave, discover my proven 3C Framework:
+          </p>
         </FadeIn>
 
-        <div className="mt-16 space-y-20">
+        <div className="mt-10 space-y-12 sm:mt-16 sm:space-y-20">
 
           {/* Secret 1 */}
-          <div className="grid items-center gap-10 md:grid-cols-2">
+          <div className="grid min-w-0 items-center gap-6 sm:gap-10 md:grid-cols-2">
             <FadeIn className="order-2 md:order-1" delay={100}>
               <p className="font-body text-sm font-semibold uppercase tracking-wide text-amethyst-pale">
-                Secret 1
+                1. Claim Your Inner Power
               </p>
               <h3 className="mt-2 font-display capitalize text-2xl text-cream">
-                How to find yourself again
+                Claim Your Inner Power
               </h3>
-              <ul className="mt-5 space-y-3 text-amethyst-pale/90">
-                <li>
-                  Rediscover <span className="font-semibold text-cream">who you are beyond being a mother, wife & caregiver</span>
-                </li>
-                <li>
-                  Reconnect with your <span className="font-semibold text-cream">strengths, dreams & desires</span>
-                </li>
-                <li>
-                  Give yourself permission to <span className="font-semibold text-cream">want more without guilt</span>
-                </li>
-              </ul>
+              <p className="mt-3 leading-relaxed text-amethyst-pale/90">
+                Reconnect with yourself, strengthen your self-worth and reclaim your confidence.
+              </p>
             </FadeIn>
-            <FadeIn className="order-1 overflow-hidden rounded-3xl md:order-2" delay={0}>
+            <FadeIn className="order-1 min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl md:order-2" delay={0}>
               <img
                 src={secret1}
                 alt="A woman rediscovering herself beyond her roles"
-                className="h-72 w-full object-cover md:h-80"
+                className="h-auto max-h-72 w-full object-contain md:h-80 md:max-h-none md:object-cover"
                 loading="lazy"
                 decoding="async"
               />
@@ -84,70 +80,56 @@ export default function Secrets({ onReserve }) {
           </div>
 
           {/* Secret 2 */}
-          <div className="grid items-center gap-10 md:grid-cols-2">
-            <FadeIn className="overflow-hidden rounded-3xl">
+          <div className="grid min-w-0 items-center gap-6 sm:gap-10 md:grid-cols-2">
+            <FadeIn className="min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl">
               <img
                 src={secret2}
                 alt="A woman rebuilding her self-trust and confidence"
-                className="h-72 w-full object-cover md:h-80"
+                className="h-auto max-h-72 w-full object-contain md:h-80 md:max-h-none md:object-cover"
                 loading="lazy"
                 decoding="async"
               />
             </FadeIn>
             <FadeIn delay={100}>
               <p className="font-body text-sm font-semibold uppercase tracking-wide text-amethyst-pale">
-                Secret 2
+                2. Connect with Your Loved Ones
               </p>
               <h3 className="mt-2 font-display capitalize text-2xl text-cream">
-                How to start believing in yourself again
+                Connect with Your Loved Ones
               </h3>
-              <ul className="mt-5 space-y-3 text-amethyst-pale/90">
-                <li>
-                  Identify the <span className="font-semibold text-cream">self-doubt, fear & limiting beliefs</span> holding you back
-                </li>
-                <li>
-                  Rebuild your <span className="font-semibold text-cream">self-trust & confidence</span>
-                </li>
-                <li>
-                  Learn to make decisions <span className="font-semibold text-cream">without constantly seeking approval</span>
-                </li>
-              </ul>
+              <p className="mt-3 leading-relaxed text-amethyst-pale/90">
+                Build healthier relationships, communicate with confidence, and nurture meaningful connections while
+                honouring your own needs.
+              </p>
             </FadeIn>
           </div>
 
           {/* Secret 3 */}
-          <div className="grid items-center gap-10 md:grid-cols-2">
+          <div className="grid min-w-0 items-center gap-6 sm:gap-10 md:grid-cols-2">
             <FadeIn className="order-2 md:order-1" delay={100}>
               <p className="font-body text-sm font-semibold uppercase tracking-wide text-amethyst-pale">
-                Secret 3
+                3. Create a Life That Fulfils You
               </p>
               <h3 className="mt-2 font-display capitalize text-2xl text-cream">
-                How to create a life that has both
+                Create a Life That Fulfils You
               </h3>
-              <ul className="mt-5 space-y-3 text-amethyst-pale/90">
-                <li>
-                  Discover a proven <span className="font-semibold text-cream">4-step formula to turn your desires into a clear, actionable path</span>
-                </li>
-                <li>
-                  Learn how to <span className="font-semibold text-cream">balance your personal dreams, family and responsibilities</span> without constantly putting yourself last
-                </li>
-                <li>
-                  Create a life where you can <span className="font-semibold text-cream">grow, thrive and have what matters to you</span> — without sacrificing the family you love
-                </li>
-              </ul>
+              <p className="mt-3 leading-relaxed text-amethyst-pale/90">
+                Move beyond self-doubt and take confident steps towards your dreams. Create a life filled with purpose,
+                happiness, and financial independence—without feeling you have to choose between your family and yourself.
+              </p>
             </FadeIn>
-            <FadeIn className="order-1 overflow-hidden rounded-3xl md:order-2" delay={0}>
+            <FadeIn className="order-1 min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl md:order-2" delay={0}>
               <img
                 src={secret3}
                 alt="A woman building a life that holds both family and ambition"
-                className="h-72 w-full object-cover md:h-80"
+                className="h-auto max-h-72 w-full object-contain md:h-80 md:max-h-none md:object-cover"
                 loading="lazy"
                 decoding="async"
               />
             </FadeIn>
           </div>
 
-          <div className="relative mx-auto flex max-w-5xl justify-center px-6 md:px-10">
+          <div className="relative mx-auto flex max-w-5xl justify-center md:px-10">
             <button
               type="button"
               onClick={onReserve}

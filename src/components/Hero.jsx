@@ -23,28 +23,36 @@ const highlight = 'font-semibold text-[#241B36] underline decoration-[#B8863A]/5
 
 const discoverPoints = [
   <>
-    After years of putting everyone's needs first, rediscover{' '}
-    <span className={highlight}>the woman behind the roles</span> of mother, wife & caregiver.
+    <span className={highlight}>Reconnect with yourself</span> after years of putting everyone else first and
+    rediscover the woman behind your roles.
   </>,
   <>
-    Break free from <span className={highlight}>self-doubt, guilt & limiting beliefs</span> that have been
-    keeping you stuck.
+    <span className={highlight}>Release emotional baggage</span> by identifying guilt, suppressed emotions and{' '}
+    <span className={highlight}>limiting beliefs</span> that may be keeping you stuck.
   </>,
   <>
-    Rebuild your <span className={highlight}>self-trust & confidence</span> so you can start believing in
-    yourself and taking action again.
+    <span className={highlight}>Rebuild self-trust</span> and feel more confident in your{' '}
+    <span className={highlight}>choices and decisions</span>.
   </>,
   <>
-    Overcome the fear of restarting after a long career break and gain the confidence to pursue your{' '}
-    <span className={highlight}>career, growth or something of your own</span>.
+    <span className={highlight}>Move beyond overthinking</span> to gain mental{' '}
+    <span className={highlight}>clarity and take consistent action</span> towards what matters to you.
   </>,
   <>
-    Rediscover your dreams, strengths & purpose and give yourself{' '}
-    <span className={highlight}>permission to want more</span>.
+    <span className={highlight}>Manage stress and overwhelm</span> with simple practices to navigate your
+    emotions and feel more balanced.
   </>,
   <>
-    Take your first step towards <span className={highlight}>emotional & financial freedom</span> while
-    being present for your family.
+    <span className={highlight}>Transform limiting mindsets</span> that hold you back from pursuing your{' '}
+    <span className={highlight}>dreams and personal growth</span>.
+  </>,
+  <>
+    <span className={highlight}>Rediscover your purpose</span> by reconnecting with your{' '}
+    <span className={highlight}>strengths, passions and aspirations</span>.
+  </>,
+  <>
+    <span className={highlight}>Take meaningful steps forward</span> towards{' '}
+    <span className={highlight}>emotional and financial freedom</span> while honouring your family and your own needs.
   </>,
 ]
 
@@ -286,19 +294,19 @@ export default function Hero({ onReserve }) {
         {/* Headline + subtext, centered */}
         <div className="mt-7 text-center">
           <h1
-            className="animate-rise mx-auto max-w-3xl font-display capitalize text-[30px] font-bold leading-[1.2] tracking-tight text-[#241B36] sm:text-[50px]"
+            className="animate-rise mx-auto max-w-4xl font-display text-[30px] font-bold leading-[1.2] tracking-tight text-[#241B36] sm:text-[50px]"
             style={{ animationDelay: '0.12s' }}
           >
-            What if you could <span className="text-[#6E4E93]">find yourself again</span>, without giving up the
-            life and family you love?
+            Learn how to <span className="text-[#6E4E93]">rebuild your confidence, reclaim your identity</span> and
+            feel valued without losing yourself in motherhood, using my 3C Framework.
           </h1>
 
           <p
             className="animate-rise mx-auto mt-6 max-w-2xl font-body text-[#5B5570] sm:text-lg"
             style={{ animationDelay: '0.24s' }}
           >
-            Feel visible. Feel valued. Rebuild your confidence. Reclaim your purpose. Create your financial
-            independence.
+            Reconnect with yourself, strengthen your relationships, rediscover your purpose, and create a life that
+            fulfils you without guilt or neglecting the family you love. ✦
           </p>
         </div>
 
@@ -525,13 +533,13 @@ export default function Hero({ onReserve }) {
             className="animate-rise min-w-0 rounded-2xl border-2 border-[#B8863A]/25 bg-white p-6 shadow-[0_12px_30px_-20px_rgba(36,27,54,0.3)] sm:p-8"
             style={{ animationDelay: '0.6s' }}
           >
-            <h2 className="font-display capitalize text-xl font-bold text-[#241B36] sm:text-2xl">
+            <h2 className="font-display text-xl font-bold text-[#241B36] sm:text-2xl">
               What you'll discover in this masterclass
             </h2>
-            <p className="mt-2 font-body capitalize text-sm text-[#5B5570]">
+            <p className="mt-2 font-body text-sm text-[#5B5570]">
               In this powerful 2-hour masterclass, you will discover how to:
             </p>
-            <ul className="mt-5 capitalize space-y-4">
+            <ul className="mt-5 space-y-4">
               {discoverPoints.map((point, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#B8863A]" strokeWidth={1.75} />

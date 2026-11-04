@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Hero from './components/Hero'
 import JoinIf from './components/JoinIf'
+import AttendingBenefits from './components/AttendingBenefits'
 import Secrets from './components/Secrets'
 import Coach from './components/Coach'
 import FinalCTA from './components/FinalCTA'
@@ -29,6 +30,7 @@ export default function App() {
         <Hero onReserve={openReserveModal} />
         <Secrets onReserve={openReserveModal} />
         <JoinIf onReserve={openReserveModal} />
+        <AttendingBenefits onReserve={openReserveModal} />
         <Testimonials onReserve={openReserveModal} />
         <Coach />
         <Faq onReserve={openReserveModal} />
